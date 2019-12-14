@@ -1,0 +1,18 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: eshop-gateway
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8081/eureka
+    registry-fetch-interval-seconds: 6
+zuul:
+  prefix: /api #添加路由器前缀
+  routes:
+    item-service: /item/** #路由到商品的微服务
+    upload-service: #文件上传的微服务
+      path: /upload/**
+      serviceId: upload-service
+      strip-prefix: false
