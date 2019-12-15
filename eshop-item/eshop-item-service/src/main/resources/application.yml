@@ -1,0 +1,24 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: item-service
+  datasource:
+    url: jdbc:mysql:///eshop?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&serverTimezone=GMT
+    username: root
+    password: root
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8081/eureka
+  instance:
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 10
+
+mybatis:
+  type-aliases-package: com.eshop.item.pojo
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
