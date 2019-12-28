@@ -2,6 +2,7 @@ package com.eshop.item.service;
 
 import com.eshop.common.enums.ExceptionEnum;
 import com.eshop.common.exception.EShopException;
+import com.eshop.common.utils.CookieUtils;
 import com.eshop.common.vo.PageResult;
 import com.eshop.item.mapper.SkuMapper;
 import com.eshop.item.mapper.SpuDetailMapper;
@@ -17,10 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -133,6 +131,53 @@ public class GoodsService {
         }
 
         //批量新增库存
-        stockMapper.insertList(stocksList);
+        count = stockMapper.insertList(stocksList);
+
+        if (count != stockMapper.insertList(stocksList)){
+            throw new EShopException(ExceptionEnum.GOODS_SAVE_ERROR);
+        }
+    }
+
+    public SpuDetail queryDetailById(Long spuId) {
+
+        SpuDetail detail = detailMapper.selectByPrimaryKey(spuId);
+        if (detail == null) {
+            throw new EShopException(ExceptionEnum.CATEGORY_NOT_FOUND);
+        }
+        return detail;
+    }
+
+    public List<Sku> querySkuById(Long spuId) {
+        //查询sku
+        Sku sku = new Sku();
+        sku.setSpuId(spuId);
+        List<Sku> skuList = skuMapper.select(sku);
+        if (CollectionUtils.isEmpty(skuList)) {
+            throw new EShopException(ExceptionEnum.GOODS_SKU_NOT_FOUND);
+        }
+
+        //查询库存
+        /*for (Sku s : skuList) {
+            Stock stock = stockMapper.selectByPrimaryKey(s.getId());
+            if (stock == null){
+                throw new EShopException(ExceptionEnum.GOODS_STOCK_NOT_FOUND);
+            }
+            s.setStock(stock.getStock());
+        }*/
+
+        //查询库存
+        List<Long> ids = skuList.stream().map(Sku::getId).collect(Collectors.toList());
+        List<Stock> stockList = stockMapper.selectByIdList(ids);
+        if (CollectionUtils.isEmpty(stockList)) {
+            throw new EShopException(ExceptionEnum.GOODS_STOCK_NOT_FOUND);
+        }
+
+        //把stock变成一个map，其key是sku的id，值是库存值
+        Map<Long, Integer> stockMap = stockList.stream()
+                .collect(Collectors.toMap(Stock::getSkuId, Stock::getStock));
+
+        skuList.forEach(s -> s.setStock(stockMap.get(sku.getId())));
+
+        return skuList;
     }
 }
