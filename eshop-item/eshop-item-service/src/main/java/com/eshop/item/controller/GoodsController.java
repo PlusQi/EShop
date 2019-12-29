@@ -42,9 +42,17 @@ public class GoodsController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    /*
+     * 商品修改
+     * */
+    @PutMapping("goods")
+    public ResponseEntity<Void> updateGoods(@RequestBody Spu spu) {
+        goodsService.updateGoods(spu);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 
     /*
-    * 根据spu的id查询detail
+    * 根据spu的id查询详情detail
     * */
     @GetMapping("/spu/detail/{id}")
     public ResponseEntity<SpuDetail> queryDetailById(@PathVariable("id") Long spuId) {
@@ -56,6 +64,6 @@ public class GoodsController {
     * */
     @GetMapping("sku/list")
     public ResponseEntity<List<Sku>> querySkuBySpuId(@RequestParam("id") Long spuId) {
-        return ResponseEntity.ok(goodsService.querySkuById(spuId));
+        return ResponseEntity.ok(goodsService.querySkuBySpuId(spuId));
     }
 }
