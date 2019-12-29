@@ -1,7 +1,9 @@
 package com.eshop.item.controller;
 
 import com.eshop.common.vo.PageResult;
+import com.eshop.item.pojo.Sku;
 import com.eshop.item.pojo.Spu;
+import com.eshop.item.pojo.SpuDetail;
 import com.eshop.item.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.plaf.SpinnerUI;
+import java.util.List;
 
 @RestController
 public class GoodsController {
@@ -37,5 +40,22 @@ public class GoodsController {
     public ResponseEntity<Void> saveGoods(@RequestBody Spu spu) {
         goodsService.saveGoods(spu);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+
+    /*
+    * 根据spu的id查询detail
+    * */
+    @GetMapping("/spu/detail/{id}")
+    public ResponseEntity<SpuDetail> queryDetailById(@PathVariable("id") Long spuId) {
+        return ResponseEntity.ok(goodsService.queryDetailById(spuId));
+    }
+
+    /*
+    * 根据spu查询下面的所有sku
+    * */
+    @GetMapping("sku/list")
+    public ResponseEntity<List<Sku>> querySkuBySpuId(@RequestParam("id") Long spuId) {
+        return ResponseEntity.ok(goodsService.querySkuById(spuId));
     }
 }
