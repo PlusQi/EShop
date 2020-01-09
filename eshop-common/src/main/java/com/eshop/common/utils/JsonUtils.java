@@ -19,7 +19,7 @@ public class JsonUtils {
     private static final Logger logger = LoggerFactory.getLogger(JsonUtils.class);
 
 
-    public static String serialize(Object obj) {
+    public static String toString(Object obj) {
         if (obj == null) {
             return null;
         }
@@ -73,6 +73,9 @@ public class JsonUtils {
             return null;
         }
     }
+
+
+
 
     /*@Data
     @AllArgsConstructor
