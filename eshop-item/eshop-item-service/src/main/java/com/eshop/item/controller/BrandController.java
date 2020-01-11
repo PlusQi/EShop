@@ -54,7 +54,7 @@ public class BrandController {
      * @param cid
      * @return
      */
-    @GetMapping("cid/{cid}")
+    @GetMapping("/cid/{cid}")
     public ResponseEntity<List<Brand>> queryBrandByCid(@PathVariable("cid") Long cid) {
         return ResponseEntity.ok(brandService.queryBrandByCid(cid));
     }
