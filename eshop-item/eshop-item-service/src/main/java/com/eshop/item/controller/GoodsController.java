@@ -23,7 +23,6 @@ public class GoodsController {
      * @param page
      * @param rows
      * @param saleable
-     * @param desc
      * @param key
      * @return
      */
@@ -32,7 +31,6 @@ public class GoodsController {
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "rows", defaultValue = "5") Integer rows,
             @RequestParam(value = "saleable", required = false)  Boolean saleable,
-            @RequestParam(value = "desc", defaultValue = "false") Boolean desc,
             @RequestParam(value = "key", required = false) String key
     ) {
             return ResponseEntity.ok(goodsService.querySpuByPage(page, rows, saleable, key));
