@@ -190,14 +190,14 @@ public class GoodsService {
         if (CollectionUtils.isEmpty(skuList)) {
             throw new EShopException(ExceptionEnum.GOODS_SKU_NOT_FOUND);
         }
-        //查询库存
+        /*//查询库存
         for (Sku s : skuList) {
             Stock stock = stockMapper.selectByPrimaryKey(s.getId());
             if (stock == null) {
                 throw new EShopException(ExceptionEnum.GOODS_STOCK_NOT_FOUND);
             }
             s.setStock(stock.getStock());
-        }
+        }*/
 
         //查询库存
         List<Long> ids = skuList.stream().map(Sku::getId).collect(Collectors.toList());
