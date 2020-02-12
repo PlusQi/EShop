@@ -12,6 +12,7 @@ zuul:
   prefix: /api #添加路由器前缀
   routes:
     item-service: /item/** #路由到商品的微服务
+    search-service: /search/** #搜索的微服务
     upload-service: #文件上传的微服务
       path: /upload/**
       serviceId: upload-service
